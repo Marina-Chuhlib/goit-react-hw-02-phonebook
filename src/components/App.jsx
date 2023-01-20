@@ -7,6 +7,7 @@ import Filter from './Filter/Filter';
 
 import css from './App.module.css';
 
+
 class App extends Component {
   state = {
     contacts: [
