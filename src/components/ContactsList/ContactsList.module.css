@@ -9,15 +9,36 @@ p {
 }
 
 .item {
-  padding: 10px 10px 10px 5px;
+  display: flex;
+  padding: 5px;
   width: fit-content;
   font-size: 18px;
 }
 
 .item:not(:last-child) {
-  margin-bottom: 10px;
+  /* margin-bottom: 4px; */
+}
+
+.contact {
+  margin-right: 15px;
 }
 
 .number {
   font-weight: normal;
+}
+
+.button {
+  display: flex;
+  padding: 5px 8px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(180, 180, 180);
+}
+
+.button:hover {
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(242, 124, 124);
 }

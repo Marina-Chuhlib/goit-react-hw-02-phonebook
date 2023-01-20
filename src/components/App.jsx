@@ -7,7 +7,6 @@ import Filter from './Filter/Filter';
 
 import css from './App.module.css';
 
-
 class App extends Component {
   state = {
     contacts: [
@@ -26,13 +25,13 @@ class App extends Component {
       number,
     };
 
-    this.setState(prevState =>
-      prevState.contacts.find(
-        (state) => state.name.toLowerCase() === contact.name.toLowerCase()
+       this.setState(({contacts}) =>
+     contacts.find(
+        contacts => contacts.name.toLowerCase() === contact.name.toLowerCase()
       )
         ? alert(`${contact.name} is already in contacts`)
         : {
-            contacts: [contact, ...prevState.contacts],
+            contacts: [contact, ...contacts],
           }
     );
   };
@@ -50,6 +49,12 @@ class App extends Component {
     this.setState({ filter: e.currentTarget.value });
   };
 
+  deleteContact = contactId => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
+    }));
+  };
+
   render() {
     const { filter } = this.state;
     const visibleContacts = this.getVisibleContacts();
@@ -61,7 +66,7 @@ class App extends Component {
 
         <h2>Contacts</h2>
         <Filter value={filter} onChange={this.handleFilter} />
-        <ContactsList contacts={visibleContacts} />
+        <ContactsList contacts={visibleContacts} deleteContact={this.deleteContact} />
       </div>
     );
   }
