@@ -1,16 +1,69 @@
-export const App = () => {
-  return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
-    </div>
-  );
-};
+import { Component } from 'react';
+import shortid from 'shortid';
+
+import ContactForm from './ContactForm/ContactForm';
+import ContactsList from './ContactsList/ContactsList';
+import Filter from './Filter/Filter';
+
+import css from './App.module.css';
+
+class App extends Component {
+  state = {
+    contacts: [
+      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+    ],
+    filter: '',
+  };
+
+  addContact = ({ name, number }) => {
+    const contact = {
+      id: shortid.generate(),
+      name,
+      number,
+    };
+
+    this.setState(prevState =>
+      prevState.contacts.find(
+        (state) => state.name.toLowerCase() === contact.name.toLowerCase()
+      )
+        ? alert(`${contact.name} is already in contacts`)
+        : {
+            contacts: [contact, ...prevState.contacts],
+          }
+    );
+  };
+
+  getVisibleContacts = () => {
+    const { contacts, filter } = this.state;
+    const normalizedFilter = filter.toLowerCase();
+
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter)
+    );
+  };
+
+  handleFilter = e => {
+    this.setState({ filter: e.currentTarget.value });
+  };
+
+  render() {
+    const { filter } = this.state;
+    const visibleContacts = this.getVisibleContacts();
+
+    return (
+      <div className={css.wrapper}>
+        <h2>Phonebook</h2>
+        <ContactForm onSubmit={this.addContact} />
+
+        <h2>Contacts</h2>
+        <Filter value={filter} onChange={this.handleFilter} />
+        <ContactsList contacts={visibleContacts} />
+      </div>
+    );
+  }
+}
+
+export default App;
